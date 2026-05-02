@@ -10,7 +10,7 @@ func _ready() -> void:
 	var model = MeshInstance3D.new()
 	model.mesh = mesh
 	var mat := StandardMaterial3D.new()
-	mat.roughness = 0.3
+	mat.roughness = 0.2
 	mat.albedo_color = Color.WHITE if is_white else Color.BLACK
 	model.material_override = mat
 	add_child(model)

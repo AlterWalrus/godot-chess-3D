@@ -1,7 +1,7 @@
 extends Node
 
 var is_white_turn := true
-var board_list: Array[Square] = []
+var board_matrix = []
 var selected_piece: Piece
 var prev_square: Square
 
@@ -73,6 +73,7 @@ func _on_square_selected(square: Square, piece: Piece):
 
 func _set_board():
 	for y in range(8):
+		var row = []
 		for x in range(8):
 			var sqr: Square = square_scene.instantiate()
 			
@@ -83,23 +84,23 @@ func _set_board():
 			
 			sqr.square_selected.connect(_on_square_selected)
 			
-			board_list.append(sqr)
 			board.add_child(sqr)
+			row.append(sqr)
+		board_matrix.append(row)
 
 
 func _set_pieces():
 	#Pawns
-	for i in range(8, 16):
+	for i in range(8):
 		var bl := Pawn.new()
 		bl.is_white = false
-		bl.position = board_list[i].position
-		board_list[i].piece = bl
+		bl.position = board_matrix[1][i].position
+		board_matrix[1][i].piece = bl
 		board.add_child(bl)
 		
-		var j = i+40
 		var wh := Pawn.new()
-		wh.position = board_list[j].position
-		board_list[j].piece = wh
+		wh.position = board_matrix[6][i].position
+		board_matrix[6][i].piece = wh
 		board.add_child(wh)
 	
 	#Main line
@@ -108,13 +109,12 @@ func _set_pieces():
 		#Black
 		var nw = line[i].new()
 		nw.is_white = false
-		nw.position = board_list[i].position
-		board_list[i].piece = nw
+		nw.position = board_matrix[0][i].position
+		board_matrix[0][i].piece = nw
 		board.add_child(nw)
 		
 		#White
-		var j = i+56
 		nw = line[i].new()
-		nw.position = board_list[j].position
-		board_list[j].piece = nw
+		nw.position = board_matrix[7][i].position
+		board_matrix[7][i].piece = nw
 		board.add_child(nw)
