@@ -19,6 +19,26 @@ func _ready() -> void:
 		model.rotate_y(PI)
 
 
+func is_path_clear(from: Vector2, to: Vector2, board_matrix: Array) -> bool:
+	var step_x = sign(to.x - from.x)
+	var step_y = sign(to.y - from.y)
+	
+	var curr_x = from.x + step_x
+	var curr_y = from.y + step_y
+	
+	while curr_x != to.x or curr_y != to.y:
+		if board_matrix[curr_y][curr_x].piece != null:
+			return false
+		curr_x += step_x
+		curr_y += step_y
+		
+	return true
+
+
+func die():
+	queue_free()
+
+
 @warning_ignore("unused_parameter")
-func move(square: Square):
+func move(from: Vector2, to: Vector2, board_matrix) -> bool:
 	return true

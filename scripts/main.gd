@@ -41,13 +41,19 @@ func _on_square_selected(square: Square, piece: Piece):
 	
 	if piece and selected_piece:
 		if piece.is_white == is_white_turn:
-			selected_piece.position.y = 0
+			var t = create_tween()
+			t.set_trans(Tween.TRANS_CIRC)
+			t.tween_property(selected_piece, "position:y", 0, 0.2)
+			
 			prev_square = null
 			selected_piece = null
 			return
 	
 	if selected_piece:
-		if selected_piece.move(square):
+		if selected_piece.move(prev_square.coords, square.coords, board_matrix):
+			if square.piece != null:
+				square.piece.die()
+			
 			var t = create_tween()
 			t.set_trans(Tween.TRANS_CIRC)
 			t.tween_property(selected_piece, "position", square.position, 0.5)
