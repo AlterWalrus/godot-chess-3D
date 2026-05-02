@@ -19,6 +19,12 @@ func _ready() -> void:
 	_set_pieces()
 
 
+func _process(delta: float) -> void:
+	var dir = Input.get_vector("left", "right", "up", "down")
+	cam.rotation.y += dir.x * delta
+	cam.rotation.x += dir.y * delta
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("move"):
 		moving = true
