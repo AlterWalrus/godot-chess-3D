@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cys6i3n2cq7c"]
+[gd_scene load_steps=11 format=3 uid="uid://cys6i3n2cq7c"]
 
-[ext_resource type="Script" uid="uid://dmolvo2cxyapc" path="res://main.gd" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://cakn338j5jbjn" path="res://square.tscn" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://dmolvo2cxyapc" path="res://scripts/main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://cakn338j5jbjn" path="res://scenes/square.tscn" id="2_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://16wlmw4h57tr" path="res://ali-youssef-space-01.jpg" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://b5lxdxv2qkd36" path="res://scenes/pieces/pawn.tscn" id="3_jyhfs"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0xm2m"]
 panorama = ExtResource("3_h2yge")
@@ -15,17 +16,27 @@ background_mode = 2
 sky = SubResource("Sky_h2yge")
 sky_rotation = Vector3(2.740167, 0, 0)
 tonemap_mode = 2
+ssil_enabled = true
 glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jyhfs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
+roughness = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_tefeu"]
+material = SubResource("StandardMaterial3D_tbgi4")
 
 [node name="Main" type="Node"]
 script = ExtResource("1_ig7tw")
 square_scene = ExtResource("2_0xm2m")
+pawn_scene = ExtResource("3_jyhfs")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1bvp3")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+transform = Transform3D(0.73715377, -0.3918053, -0.5505388, 0.6744923, 0.4758337, 0.5644843, 0.04079692, -0.7874458, 0.6150322, 0, 0, 0)
 shadow_enabled = true
 
 [node name="Board" type="Node3D" parent="."]
@@ -35,3 +46,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -3.5)
 
 [node name="Camera3D" type="Camera3D" parent="CamPivot"]
 transform = Transform3D(1, 0, 0, 0, 0.44386905, 0.89609176, 0, -0.89609176, 0.44386905, 0, 5, 3.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("PlaneMesh_jyhfs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49145472, 0)
+mesh = SubResource("SphereMesh_tefeu")

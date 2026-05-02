@@ -1,12 +1,14 @@
 class_name Square
 extends Area3D
 
+signal square_selected
+
+var piece: Piece
 var coords: Vector2
 var color: Color
 var mouse_in := false
 
 @onready var plane := $MeshInstance3D
-
 
 func _ready() -> void:
 	plane.mesh = PlaneMesh.new()
@@ -17,9 +19,9 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and mouse_in:
-			print(coords)
+	if event.is_action_pressed("click") and mouse_in:
+		#print(coords)
+		square_selected.emit(self, piece)
 
 
 func _mouse_enter() -> void:

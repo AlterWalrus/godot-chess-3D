@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cakn338j5jbjn"]
 
-[ext_resource type="Script" uid="uid://cg56sq60i0rdb" path="res://square.gd" id="1_2eeqm"]
+[ext_resource type="Script" uid="uid://cg56sq60i0rdb" path="res://scripts/square.gd" id="1_2eeqm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
@@ -8,7 +8,7 @@
 script = ExtResource("1_2eeqm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
