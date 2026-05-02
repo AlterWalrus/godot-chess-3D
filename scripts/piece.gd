@@ -36,9 +36,16 @@ func is_path_clear(from: Vector2, to: Vector2, board_matrix: Array) -> bool:
 
 
 func die():
+	await get_tree().create_timer(0.2).timeout
+	var t = create_tween()
+	t.tween_property(self, "scale", Vector3.ONE*0.01, 0.2)
+	await t.finished
 	queue_free()
 
 
 @warning_ignore("unused_parameter")
 func move(from: Vector2, to: Vector2, board_matrix) -> bool:
+	var target_square: Square = board_matrix[to.y][to.x]
+	if target_square.piece != null and target_square.piece.is_white == self.is_white:
+		return false
 	return true
