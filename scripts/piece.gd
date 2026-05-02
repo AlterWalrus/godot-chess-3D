@@ -3,25 +3,22 @@ extends Node3D
 
 var is_white := true
 
-
-func system_checks(coords: Vector2):
-	if coords < Vector2.ZERO or coords > Vector2.ONE*8:
-		return false
-	return true
+@export var mesh: ArrayMesh
 
 
-@warning_ignore("unused_parameter")
-func custom_checks(coords: Vector2):
-	return true
-
-@warning_ignore("unused_parameter")
-func move(coords: Vector2):
-	return true
+func _ready() -> void:
+	var model = MeshInstance3D.new()
+	model.mesh = mesh
+	var mat := StandardMaterial3D.new()
+	mat.roughness = 0.3
+	mat.albedo_color = Color.WHITE if is_white else Color.BLACK
+	model.material_override = mat
+	add_child(model)
 	
-	#if not system_checks(coords):
-		#return
-	#
-	#if not custom_checks(coords):
-		#return
-	#
-	#print("moving to ", coords)
+	if is_white:
+		model.rotate_y(PI)
+
+
+@warning_ignore("unused_parameter")
+func move(square: Square):
+	return true
