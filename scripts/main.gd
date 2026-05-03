@@ -37,6 +37,12 @@ func _input(event: InputEvent) -> void:
 		cam.rotation.x += -event.relative.y * moving_sens
 
 
+func _on_king_died(is_white):
+	var tx = "PIEZAS NEGRAS GANAN" if is_white else "PIEZAS BLANCAS GANAN"
+	$CanvasLayer/EndScreen/Label.text = tx
+	$CanvasLayer/EndScreen.show()
+
+
 func _on_square_selected(square: Square, piece: Piece):
 	if not piece and not selected_piece:
 		return
@@ -124,9 +130,13 @@ func _set_pieces():
 		nw.position = board_matrix[0][i].position
 		board_matrix[0][i].piece = nw
 		board.add_child(nw)
+		if nw is King:
+			nw.died.connect(_on_king_died)
 		
 		#White
 		nw = line[i].new()
 		nw.position = board_matrix[7][i].position
 		board_matrix[7][i].piece = nw
 		board.add_child(nw)
+		if nw is King:
+			nw.died.connect(_on_king_died)
