@@ -4,12 +4,9 @@ extends Piece
 signal died
 
 func _init() -> void:
-	mesh = load("res://models/horse.obj")
+	mesh = load("res://models/king.obj")
 
-func move(from: Vector2, to: Vector2, board_matrix: Array) -> bool:
-	if not super.move(from, to, board_matrix):
-		return false
-	
+func move(from: Vector2, to: Vector2, _board_matrix: Array) -> bool:
 	var dx = abs(to.x - from.x)
 	var dy = abs(to.y - from.y)
 	

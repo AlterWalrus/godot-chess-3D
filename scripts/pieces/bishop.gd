@@ -6,9 +6,6 @@ func _init() -> void:
 
 
 func move(from: Vector2, to: Vector2, board_matrix) -> bool:
-	if not super.move(from, to, board_matrix):
-		return false
-	
 	var dx = abs(to.x - from.x)
 	var dy = abs(to.y - from.y)
 	

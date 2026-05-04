@@ -5,7 +5,6 @@ var is_white := true
 
 @export var mesh: ArrayMesh
 
-
 func _ready() -> void:
 	var model = MeshInstance3D.new()
 	model.mesh = mesh
@@ -45,7 +44,4 @@ func die():
 
 @warning_ignore("unused_parameter")
 func move(from: Vector2, to: Vector2, board_matrix) -> bool:
-	var target_square: Square = board_matrix[to.y][to.x]
-	if target_square.piece != null and target_square.piece.is_white == self.is_white:
-		return false
 	return true
