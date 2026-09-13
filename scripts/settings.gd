@@ -3,16 +3,58 @@ extends Control
 var settings_open := false
 
 @export var env: WorldEnvironment
+@export var sun: DirectionalLight3D
+@export var background_list: Array[Sky]
 
 @onready var settings_button := $SettingsButton
 @onready var settings_panel := $SettingsPanel
 
-@onready var fullscreen := $SettingsPanel/Fullscreen
+@onready var settings_vbox := $SettingsPanel/VBox
+@onready var fullscreen := $SettingsPanel/VBox/Fullscreen
+@onready var shadows := $SettingsPanel/VBox/Shadows
+@onready var ssao := $SettingsPanel/VBox/SSAO
+@onready var glow := $SettingsPanel/VBox/Glow
+@onready var depth := $SettingsPanel/VBox/DepthField
+@onready var backgrond := $SettingsPanel/VBox/Background
 
 func _ready() -> void:
+	for c in settings_vbox.get_children():
+		if c is Control:
+			c.focus_mode = Control.FOCUS_NONE
+	
 	settings_panel.hide()
 	settings_button.pressed.connect(_on_settings_pressed)
 	fullscreen.toggled.connect(_fullscreen_toggle)
+	shadows.toggled.connect(_shadows_toggle)
+	ssao.toggled.connect(_ssao_toggled)
+	glow.toggled.connect(_glow_toggled)
+	depth.toggled.connect(_depth_toggled)
+	backgrond.item_selected.connect(_background_changed)
+
+
+func _background_changed(index):
+	if not background_list[index]:
+		env.environment.background_mode = Environment.BG_CLEAR_COLOR
+		return
+	
+	env.environment.background_mode = Environment.BG_SKY
+	env.environment.sky = background_list[index]
+
+
+func _depth_toggled(on):
+	env.camera_attributes.dof_blur_far_enabled = on
+
+
+func _glow_toggled(on):
+	env.environment.glow_enabled = on
+
+
+func _ssao_toggled(on):
+	env.environment.ssao_enabled = on
+
+
+func _shadows_toggle(on):
+	sun.shadow_enabled = on
 
 
 func _fullscreen_toggle(fs):
