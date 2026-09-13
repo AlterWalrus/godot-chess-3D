@@ -4,7 +4,7 @@ extends Piece
 signal died
 
 func _init() -> void:
-	mesh = load("res://models/king.obj")
+	mesh = load("res://models/queen.obj")
 
 func move(from: Vector2, to: Vector2, _board_matrix: Array) -> bool:
 	var dx = abs(to.x - from.x)
