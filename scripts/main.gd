@@ -11,6 +11,8 @@ var moving := false
 @onready var board := $Board
 @onready var cam := $CamPivot
 @onready var curr_turn := $CanvasLayer/CurrentTurn
+@onready var gameover := $CanvasLayer/EndScreen
+@onready var gameover_label := $CanvasLayer/EndScreen/Label
 
 @export var square_scene: PackedScene
 
@@ -38,9 +40,13 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_king_died(is_white):
-	var tx = "PIEZAS NEGRAS GANAN" if is_white else "PIEZAS BLANCAS GANAN"
-	$CanvasLayer/EndScreen/Label.text = tx
-	$CanvasLayer/EndScreen.show()
+	var tx = "BLACK PIECES WIN" if is_white else "WHITE PIECES WIN"
+	gameover_label.text = tx
+	gameover.show()
+	var og_label_position = gameover_label.position.x
+	var t = create_tween().set_trans(Tween.TRANS_CIRC).set_parallel()
+	t.tween_property(gameover, "position:x", 0, 0.5).from(-gameover.size.x)
+	t.tween_property(gameover_label, "position:x", og_label_position, 0.7).from(-gameover.size.x)
 
 
 func _on_square_selected(square: Square, piece: Piece):
