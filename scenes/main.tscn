@@ -281,10 +281,9 @@ text = "Set up layout"
 [node name="PopupPiece" type="PopupMenu" parent="CanvasLayer/Settings/SettingsPanel"]
 oversampling_override = 1.0
 title = "Select piece"
-size = Vector2i(124, 360)
+size = Vector2i(124, 300)
 visible = true
 allow_search = false
-prefer_native_menu = true
 item_count = 7
 item_0/text = "none"
 item_0/id = 0
