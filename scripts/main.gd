@@ -16,9 +16,13 @@ var cam_zpos := 7.0
 @onready var gameover := $CanvasLayer/EndScreen
 @onready var gameover_label := $CanvasLayer/EndScreen/Label
 
+@onready var settings := $CanvasLayer/Settings
+
 @export var square_scene: PackedScene
 
 func _ready() -> void:
+	settings.setup_layout.connect(_setup_layout)
+	
 	_set_board()
 	_set_pieces()
 
@@ -124,6 +128,29 @@ func _set_board():
 		board_matrix.append(row)
 
 
+func _clean_board():
+	var cleared_pieces := 0
+	for y in range(8):
+		for x in range(8):
+			if board_matrix[y][x].piece:
+				board_matrix[y][x].piece.queue_free()
+				board_matrix[y][x].piece = null
+				cleared_pieces += 1
+	print(cleared_pieces, " pieces cleared")
+
+
+func _setup_layout(layout: Dictionary):
+	_clean_board()
+	var piece_map = [Pawn, Queen, King, Bishop, Horse, Rook]
+	for pos in layout.keys():
+		var piece_class: int = layout[pos].piece-1
+		var new_piece = piece_map[piece_class].new()
+		new_piece.position = board_matrix[pos.y][pos.x].position
+		board_matrix[pos.y][pos.x].piece = new_piece
+		board.add_child(new_piece)
+
+
+#----------------- this might get discarded
 func _set_pieces():
 	#Pawns
 	for i in range(8):

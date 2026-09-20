@@ -1,5 +1,7 @@
 extends Control
 
+signal setup_layout(layout: Dictionary)
+
 var settings_open := false
 
 @export var env: WorldEnvironment
@@ -17,6 +19,9 @@ var settings_open := false
 @onready var depth := $SettingsPanel/VBox/DepthField
 @onready var backgrond := $SettingsPanel/VBox/Background
 
+@onready var setup_grid := $SettingsPanel/VBox/SetupGrid
+@onready var setup_button := $SettingsPanel/VBox/SetupButton
+
 func _ready() -> void:
 	for c in settings_vbox.get_children():
 		if c is Control:
@@ -30,6 +35,8 @@ func _ready() -> void:
 	glow.toggled.connect(_glow_toggled)
 	depth.toggled.connect(_depth_toggled)
 	backgrond.item_selected.connect(_background_changed)
+	
+	setup_button.pressed.connect(setup_layout.emit.bind(setup_grid.layout))
 
 
 func _background_changed(index):

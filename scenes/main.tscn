@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://rwx4iscqnfhl" path="res://scripts/fps.gd" id="5_tefeu"]
 [ext_resource type="Script" uid="uid://be4iikgxrp3rr" path="res://scenes/setup_grid.gd" id="6_o6xl0"]
 [ext_resource type="Texture2D" uid="uid://bpewbuf7ilha6" path="res://sprites/queen.png" id="7_85g3d"]
-[ext_resource type="Texture2D" uid="uid://bf36bdpwttaag" path="res://sprites/test.png" id="7_tipki"]
+[ext_resource type="PackedScene" uid="uid://pfx6tylgtjes" path="res://scenes/layout_button.tscn" id="7_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://ffhb0rbqk54s" path="res://sprites/pawn.png" id="8_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://ckf6kcr52c6v8" path="res://sprites/king.png" id="10_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://cdbj4e7qfwl8f" path="res://sprites/bishop.png" id="11_jbj1t"]
@@ -257,24 +257,7 @@ layout_mode = 2
 columns = 8
 script = ExtResource("6_o6xl0")
 popup = NodePath("../../PopupPiece")
-
-[node name="PieceButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/SetupGrid"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-flat = true
-expand_icon = true
-metadata/_edit_group_ = true
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Settings/SettingsPanel/VBox/SetupGrid/PieceButton"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("7_tipki")
-expand_mode = 2
+layout_button_scene = ExtResource("7_a8y0u")
 
 [node name="SetupButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 layout_mode = 2
