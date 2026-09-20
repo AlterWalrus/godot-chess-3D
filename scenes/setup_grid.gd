@@ -3,6 +3,7 @@ extends GridContainer
 @export var popup: PopupMenu
 @export var layout_button_scene: PackedScene
 
+var hover_button: LayoutButton = null
 var active_button: LayoutButton = null
 var layout: Dictionary = {}
 
@@ -11,7 +12,7 @@ func _ready() -> void:
 	
 	for i in range(64):
 		var btn: LayoutButton = layout_button_scene.instantiate()
-		var col = Color.WHITE if !(int(i/8.0)+i)&1 else Color.BLACK
+		var col: Color = Color.WHITE if !(int(i/8.0)+i)&1 else Color.BLACK
 		btn.get_node("TextureRect").modulate = col
 		_setup_button(btn, Vector2i(i%8, int(i/8.0)))
 		add_child(btn)
@@ -19,7 +20,21 @@ func _ready() -> void:
 
 func _setup_button(btn: LayoutButton, c: Vector2i) -> void:
 	btn.pressed.connect(_button_pressed.bind(btn))
+	btn.mouse_entered.connect(_button_mouse_entered.bind(btn))
+	btn.mouse_exited.connect(_button_mouse_exited.bind(btn))
 	btn.coords = c
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index != MOUSE_BUTTON_RIGHT or not event.pressed:
+			return
+		if not hover_button:
+			return
+		
+		hover_button.switch_color()
+		if hover_button.coords in layout:
+			layout[hover_button.coords]["is_white"] = hover_button.is_white
 
 
 func _button_pressed(btn: LayoutButton) -> void:
@@ -31,6 +46,13 @@ func _button_pressed(btn: LayoutButton) -> void:
 	if space < popup.size.y:
 		offset.y -= popup.size.y-space
 	popup.position = btn.global_position + offset
+
+
+func _button_mouse_entered(btn: LayoutButton):
+	hover_button = btn
+
+func _button_mouse_exited(_btn: LayoutButton):
+	pass
 
 
 func _piece_changed(index: int) -> void:

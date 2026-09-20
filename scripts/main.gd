@@ -144,10 +144,13 @@ func _setup_layout(layout: Dictionary):
 	var piece_map = [Pawn, Queen, King, Bishop, Horse, Rook]
 	for pos in layout.keys():
 		var piece_class: int = layout[pos].piece-1
-		var new_piece = piece_map[piece_class].new()
+		var new_piece: Piece = piece_map[piece_class].new()
+		new_piece.is_white = layout[pos].is_white
+		print(layout[pos].is_white)
 		new_piece.position = board_matrix[pos.y][pos.x].position
 		board_matrix[pos.y][pos.x].piece = new_piece
 		board.add_child(new_piece)
+	print(len(layout), " pieces added")
 
 
 #----------------- this might get discarded
