@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cys6i3n2cq7c"]
+[gd_scene load_steps=26 format=3 uid="uid://cys6i3n2cq7c"]
 
 [ext_resource type="Script" uid="uid://dmolvo2cxyapc" path="res://scripts/main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://cakn338j5jbjn" path="res://scenes/square.tscn" id="2_0xm2m"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://cch4ohmgl3k71" path="res://settings-icon.png" id="4_tbgi4"]
 [ext_resource type="Script" uid="uid://d1tbr1q4lpvgj" path="res://scripts/settings.gd" id="4_tefeu"]
 [ext_resource type="Script" uid="uid://rwx4iscqnfhl" path="res://scripts/fps.gd" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://be4iikgxrp3rr" path="res://scenes/setup_grid.gd" id="6_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://bpewbuf7ilha6" path="res://sprites/queen.png" id="7_85g3d"]
+[ext_resource type="Texture2D" uid="uid://bf36bdpwttaag" path="res://sprites/test.png" id="7_tipki"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0xm2m"]
 panorama = ExtResource("4_jyhfs")
@@ -158,6 +161,7 @@ text = "??? GANA"
 
 [node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun")]
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
@@ -173,24 +177,25 @@ sun = NodePath("../../Sun")
 background_list = Array[Sky]([SubResource("Sky_tipki"), SubResource("Sky_choun"), null])
 
 [node name="SettingsPanel" type="Panel" parent="CanvasLayer/Settings"]
-custom_minimum_size = Vector2(320, 320)
+custom_minimum_size = Vector2(240, 320)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -320.0
-offset_bottom = 320.0
+offset_left = -300.0
+offset_top = -1.0
+offset_bottom = 599.0
 grow_horizontal = 0
-pivot_offset = Vector2(320, 0)
+pivot_offset = Vector2(300, 0)
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/Settings/SettingsPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
+offset_left = 8.0
 offset_top = 5.0
-offset_right = -135.0
+offset_right = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -202,6 +207,22 @@ script = ExtResource("5_tefeu")
 
 [node name="Timer" type="Timer" parent="CanvasLayer/Settings/SettingsPanel/VBox/FPS"]
 autostart = true
+
+[node name="Label2" type="Label" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+layout_mode = 2
+text = "Graphics"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Settings/SettingsPanel/VBox/Label2"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 12.415001
+offset_bottom = 16.415003
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Fullscreen" type="CheckButton" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 layout_mode = 2
@@ -237,6 +258,68 @@ popup/item_1/text = "Procedural"
 popup/item_1/id = 1
 popup/item_2/text = "Solid color"
 popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+layout_mode = 2
+text = "Layout"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Settings/SettingsPanel/VBox/Label"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 12.415001
+offset_bottom = 16.415003
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SetupGrid" type="GridContainer" parent="CanvasLayer/Settings/SettingsPanel/VBox" node_paths=PackedStringArray("popup")]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+columns = 8
+script = ExtResource("6_o6xl0")
+popup = NodePath("../../PopupPiece")
+
+[node name="PieceButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/SetupGrid"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+flat = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Settings/SettingsPanel/VBox/SetupGrid/PieceButton"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_tipki")
+expand_mode = 2
+
+[node name="SetupButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+layout_mode = 2
+text = "Set up layout"
+
+[node name="PopupPiece" type="PopupMenu" parent="CanvasLayer/Settings/SettingsPanel"]
+oversampling_override = 1.0
+title = "Select piece"
+size = Vector2i(119, 197)
+visible = true
+allow_search = false
+item_count = 4
+item_0/text = "none"
+item_0/id = 0
+item_1/text = "pawn"
+item_1/icon = ExtResource("7_85g3d")
+item_1/id = 1
+item_2/text = "queen"
+item_2/icon = ExtResource("7_85g3d")
+item_2/id = 2
+item_3/text = "king"
+item_3/icon = ExtResource("7_85g3d")
+item_3/id = 3
 
 [node name="SettingsButton" type="Button" parent="CanvasLayer/Settings"]
 custom_minimum_size = Vector2(48, 48)
