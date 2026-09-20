@@ -7,9 +7,11 @@ var prev_square: Square
 
 var moving_sens := 0.004
 var moving := false
+var cam_zpos := 7.0
 
 @onready var board := $Board
-@onready var cam := $CamPivot
+@onready var cam_pivot := $CamPivot
+@onready var cam := $CamPivot/Camera3D
 @onready var curr_turn := $CanvasLayer/CurrentTurn
 @onready var gameover := $CanvasLayer/EndScreen
 @onready var gameover_label := $CanvasLayer/EndScreen/Label
@@ -23,8 +25,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var dir = Input.get_vector("left", "right", "up", "down")
-	cam.rotation.y += dir.x * delta
-	cam.rotation.x += dir.y * delta
+	cam_pivot.rotation.y += dir.x * delta
+	cam_pivot.rotation.x += dir.y * delta
+	
+	cam.position.z = lerp(cam.position.z, cam_zpos, 0.2)
 
 
 func _input(event: InputEvent) -> void:
@@ -35,8 +39,15 @@ func _input(event: InputEvent) -> void:
 		moving = false
 	
 	if event is InputEventMouseMotion and moving:
-		cam.rotation.y += -event.relative.x * moving_sens
-		cam.rotation.x += -event.relative.y * moving_sens
+		cam_pivot.rotation.y += -event.relative.x * moving_sens
+		cam_pivot.rotation.x += -event.relative.y * moving_sens
+	
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+			cam_zpos -= 1.5
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+			cam_zpos += 1.5
+
 
 
 func _on_king_died(is_white):
