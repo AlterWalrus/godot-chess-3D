@@ -3,6 +3,7 @@ extends Control
 signal setup_layout(layout: Dictionary)
 
 var settings_open := false
+var og_pos := Vector2(888, 0)
 
 @export var env: WorldEnvironment
 @export var sun: DirectionalLight3D
@@ -75,10 +76,11 @@ func _on_settings_pressed():
 	settings_panel.show()
 	
 	var t = create_tween().set_trans(Tween.TRANS_CUBIC)
+	print(og_pos.x)
 	if settings_open:
-		t.tween_property(settings_panel, "scale", Vector2.ONE, 0.2).from(Vector2.ONE*0.1)
+		t.tween_property(settings_panel, "position:x", og_pos.x, 0.2).from(1280)
 	else:
-		t.tween_property(settings_panel, "scale", Vector2.ONE*0.1, 0.2).from(Vector2.ONE)
+		t.tween_property(settings_panel, "position:x", 1280, 0.2).from(og_pos.x)
 	
 	await t.finished
 	settings_button.disabled = false
