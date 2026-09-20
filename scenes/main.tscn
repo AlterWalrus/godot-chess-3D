@@ -65,6 +65,7 @@ energy_multiplier = 0.1
 sky_material = SubResource("PanoramaSkyMaterial_o6xl0")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_85g3d"]
+ground_bottom_color = Color(1.4439226e-07, 0.3068485, 0.050884455, 1)
 
 [sub_resource type="Sky" id="Sky_choun"]
 sky_material = SubResource("ProceduralSkyMaterial_85g3d")
@@ -188,11 +189,12 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -440.0
+offset_left = -361.0
 offset_top = -1.0
+offset_right = -1.0
 offset_bottom = 689.0
 grow_horizontal = 0
-pivot_offset = Vector2(440, 0)
+pivot_offset = Vector2(360, 0)
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/Settings/SettingsPanel"]
 layout_mode = 1
@@ -257,7 +259,7 @@ script = ExtResource("6_o6xl0")
 popup = NodePath("../../PopupPiece")
 
 [node name="PieceButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/SetupGrid"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 flat = true
 expand_icon = true

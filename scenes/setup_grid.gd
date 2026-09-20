@@ -30,8 +30,6 @@ func _button_pressed(btn: Button) -> void:
 	var space = get_viewport_rect().size.y - btn.global_position.y
 	if space < popup.size.y:
 		offset.y -= popup.size.y-space
-	#print(btn.global_position.y)
-	#print(get_viewport_rect().size.y)
 	popup.position = btn.global_position + offset
 
 
