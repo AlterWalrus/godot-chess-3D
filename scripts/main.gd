@@ -7,7 +7,11 @@ var prev_square: Square
 
 var moving_sens := 0.004
 var moving := false
-var cam_zpos := 7.0
+var cam_zpos := 7.0:
+	set(x):
+		var min_zoom := 2.5
+		var max_zoom := 8.5
+		cam_zpos = clamp(x, min_zoom, max_zoom)
 
 @onready var board := $Board
 @onready var cam_pivot := $CamPivot
@@ -51,6 +55,7 @@ func _input(event: InputEvent) -> void:
 			cam_zpos -= 1.5
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
 			cam_zpos += 1.5
+		print(cam_zpos)
 
 
 
