@@ -55,7 +55,6 @@ func _input(event: InputEvent) -> void:
 			cam_zpos -= 1.5
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
 			cam_zpos += 1.5
-		print(cam_zpos)
 
 
 
@@ -88,23 +87,26 @@ func _on_square_selected(square: Square, piece: Piece):
 			return
 	
 	if selected_piece:
-		if selected_piece.move(prev_square.coords, square.coords, board_matrix):
-			if square.piece != null:
-				square.piece.die()
-			
-			var t = create_tween()
-			t.set_trans(Tween.TRANS_CIRC)
-			t.tween_property(selected_piece, "position", square.position, 0.5)
-			
-			square.piece = selected_piece
-			
-			prev_square.piece = null
-			selected_piece = null
-			
-			#Update current turn
-			is_white_turn = not is_white_turn
-			var col = Color.WHITE if is_white_turn else Color.BLACK
-			create_tween().tween_property(curr_turn, "modulate", col, 0.5)
+		if not selected_piece.move(prev_square.coords, square.coords, board_matrix):
+			wrong_move_animation()
+			return
+		
+		if square.piece != null:
+			square.piece.die()
+		
+		var t = create_tween()
+		t.set_trans(Tween.TRANS_CIRC)
+		t.tween_property(selected_piece, "position", square.position, 0.5)
+		
+		square.piece = selected_piece
+		
+		prev_square.piece = null
+		selected_piece = null
+		
+		#Update current turn
+		is_white_turn = not is_white_turn
+		var col = Color.WHITE if is_white_turn else Color.BLACK
+		create_tween().tween_property(curr_turn, "modulate", col, 0.5)
 			
 	else:
 		prev_square = square
@@ -156,6 +158,16 @@ func _setup_layout(layout: Dictionary):
 		board_matrix[pos.y][pos.x].piece = new_piece
 		board.add_child(new_piece)
 	print(len(layout), " pieces added")
+
+
+func wrong_move_animation():
+	var mag := 0.1
+	var s = create_tween()
+	s.tween_property(selected_piece, "rotation:z", mag, 0.1)
+	s.tween_property(selected_piece, "rotation:z", -mag, 0.1)
+	s.tween_property(selected_piece, "rotation:z", mag*0.6, 0.1)
+	s.tween_property(selected_piece, "rotation:z", -mag*0.6, 0.1)
+	s.tween_property(selected_piece, "rotation:z", 0, 0.1)
 
 
 #----------------- this might get discarded
