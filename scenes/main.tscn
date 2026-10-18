@@ -166,7 +166,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 48
 text = "??? GANA"
 
-[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "save_button")]
+[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "settings_button", "settings_panel", "settings_vbox", "fullscreen", "shadows", "ssao", "glow", "depth", "backgrond", "setup_grid", "setup_button", "game_name", "save_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -182,6 +182,18 @@ script = ExtResource("4_tefeu")
 env = NodePath("../../WorldEnvironment")
 sun = NodePath("../../Sun")
 background_list = Array[Sky]([SubResource("Sky_tipki"), SubResource("Sky_choun"), null])
+settings_button = NodePath("SettingsButton")
+settings_panel = NodePath("SettingsPanel")
+settings_vbox = NodePath("SettingsPanel/VBox")
+fullscreen = NodePath("SettingsPanel/VBox/Fullscreen")
+shadows = NodePath("SettingsPanel/VBox/Shadows")
+ssao = NodePath("SettingsPanel/VBox/SSAO")
+glow = NodePath("SettingsPanel/VBox/Glow")
+depth = NodePath("SettingsPanel/VBox/DepthField")
+backgrond = NodePath("SettingsPanel/VBox/Background")
+setup_grid = NodePath("SettingsPanel/VBox/SetupGrid")
+setup_button = NodePath("SettingsPanel/VBox/SetupButton")
+game_name = NodePath("SettingsPanel/VBox/CurrentGame/GameName")
 save_button = NodePath("SettingsPanel/VBox/CurrentGame/SaveButton")
 
 [node name="SettingsPanel" type="Panel" parent="CanvasLayer/Settings"]

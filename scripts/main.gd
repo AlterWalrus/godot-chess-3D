@@ -33,7 +33,6 @@ func _ready() -> void:
 	
 	var default_layout_path = "res://default.chess"
 	if not FileAccess.file_exists(default_layout_path):
-		print("shit aint there lil bro")
 		return
 	var file = FileAccess.open(default_layout_path, FileAccess.READ)
 	var layout_dict: Dictionary = file.get_var()

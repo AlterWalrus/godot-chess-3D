@@ -10,20 +10,21 @@ var og_pos := Vector2(888, 0)
 @export var sun: DirectionalLight3D
 @export var background_list: Array[Sky]
 
-@onready var settings_button := $SettingsButton
-@onready var settings_panel := $SettingsPanel
+@export var settings_button: Button
+@export var settings_panel: Panel
 
-@onready var settings_vbox := $SettingsPanel/VBox
-@onready var fullscreen := $SettingsPanel/VBox/Fullscreen
-@onready var shadows := $SettingsPanel/VBox/Shadows
-@onready var ssao := $SettingsPanel/VBox/SSAO
-@onready var glow := $SettingsPanel/VBox/Glow
-@onready var depth := $SettingsPanel/VBox/DepthField
-@onready var backgrond := $SettingsPanel/VBox/Background
+@export var settings_vbox: VBoxContainer
+@export var fullscreen: CheckButton
+@export var shadows: CheckButton
+@export var ssao: CheckButton
+@export var glow: CheckButton
+@export var depth: CheckButton
+@export var backgrond: OptionButton
 
-@onready var setup_grid := $SettingsPanel/VBox/SetupGrid
-@onready var setup_button := $SettingsPanel/VBox/SetupButton
+@export var setup_grid: GridContainer
+@export var setup_button: Button
 
+@export var game_name: LineEdit
 @export var save_button: Button
 
 func _ready() -> void:
@@ -42,6 +43,12 @@ func _ready() -> void:
 	
 	setup_button.pressed.connect(setup_layout.emit.bind(setup_grid.layout))
 	save_button.pressed.connect(save_game.emit)
+	save_button.disabled = true
+	game_name.text_changed.connect(_game_name_text_changed)
+
+
+func _game_name_text_changed(new_string: String):
+	save_button.disabled = new_string.is_empty()
 
 
 func _background_changed(index):
