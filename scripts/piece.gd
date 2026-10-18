@@ -1,6 +1,7 @@
 class_name Piece
 extends Node3D
 
+var class_index := 0
 var is_white := true
 
 @export var mesh: ArrayMesh

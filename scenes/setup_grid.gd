@@ -64,6 +64,6 @@ func _piece_changed(index: int) -> void:
 			return
 		
 		layout[active_button.coords] = {
-			"piece": index,
+			"piece": index-1,
 			"is_white": active_button.is_white
 		}

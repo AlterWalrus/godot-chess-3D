@@ -166,7 +166,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 48
 text = "??? GANA"
 
-[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun")]
+[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "save_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -182,6 +182,7 @@ script = ExtResource("4_tefeu")
 env = NodePath("../../WorldEnvironment")
 sun = NodePath("../../Sun")
 background_list = Array[Sky]([SubResource("Sky_tipki"), SubResource("Sky_choun"), null])
+save_button = NodePath("SettingsPanel/VBox/CurrentGame/SaveButton")
 
 [node name="SettingsPanel" type="Panel" parent="CanvasLayer/Settings"]
 custom_minimum_size = Vector2(240, 320)
@@ -202,7 +203,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 5.0
-offset_right = -78.0
+offset_right = -51.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -261,6 +262,22 @@ layout_button_scene = ExtResource("7_a8y0u")
 [node name="SetupButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 layout_mode = 2
 text = "Set up layout"
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+layout_mode = 2
+text = "Current game state"
+horizontal_alignment = 1
+
+[node name="CurrentGame" type="HBoxContainer" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="GameName" type="LineEdit" parent="CanvasLayer/Settings/SettingsPanel/VBox/CurrentGame"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SaveButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/CurrentGame"]
+layout_mode = 2
+text = "Save current game"
 
 [node name="PopupPiece" type="PopupMenu" parent="CanvasLayer/Settings/SettingsPanel"]
 oversampling_override = 1.0

@@ -1,6 +1,7 @@
 extends Control
 
 signal setup_layout(layout: Dictionary)
+signal save_game
 
 var settings_open := false
 var og_pos := Vector2(888, 0)
@@ -23,6 +24,8 @@ var og_pos := Vector2(888, 0)
 @onready var setup_grid := $SettingsPanel/VBox/SetupGrid
 @onready var setup_button := $SettingsPanel/VBox/SetupButton
 
+@export var save_button: Button
+
 func _ready() -> void:
 	for c in settings_vbox.get_children():
 		if c is Control:
@@ -38,6 +41,7 @@ func _ready() -> void:
 	backgrond.item_selected.connect(_background_changed)
 	
 	setup_button.pressed.connect(setup_layout.emit.bind(setup_grid.layout))
+	save_button.pressed.connect(save_game.emit)
 
 
 func _background_changed(index):
@@ -76,7 +80,6 @@ func _on_settings_pressed():
 	settings_panel.show()
 	
 	var t = create_tween().set_trans(Tween.TRANS_CUBIC)
-	print(og_pos.x)
 	if settings_open:
 		t.tween_property(settings_panel, "position:x", og_pos.x, 0.2).from(1280)
 	else:

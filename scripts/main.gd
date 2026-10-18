@@ -1,5 +1,7 @@
 extends Node
 
+var piece_map = [Pawn, Queen, King, Bishop, Horse, Rook]
+
 var is_white_turn := true
 var board_matrix = []
 var selected_piece: Piece
@@ -26,9 +28,16 @@ var cam_zpos := 7.0:
 
 func _ready() -> void:
 	settings.setup_layout.connect(_setup_layout)
+	settings.save_game.connect(_save_current_layout)
+	_build_board()
 	
-	_set_board()
-	_set_pieces()
+	var default_layout_path = "res://default.chess"
+	if not FileAccess.file_exists(default_layout_path):
+		print("shit aint there lil bro")
+		return
+	var file = FileAccess.open(default_layout_path, FileAccess.READ)
+	var layout_dict: Dictionary = file.get_var()
+	_setup_layout(layout_dict)
 
 
 func _process(delta: float) -> void:
@@ -57,7 +66,6 @@ func _input(event: InputEvent) -> void:
 			cam_zpos += 1.5
 
 
-
 func _on_king_died(is_white):
 	var tx = "BLACK PIECES WIN" if is_white else "WHITE PIECES WIN"
 	gameover_label.text = tx
@@ -77,18 +85,17 @@ func _on_square_selected(square: Square, piece: Piece):
 			return
 	
 	if piece and selected_piece:
+		var same_piece = (piece == selected_piece)
 		if piece.is_white == is_white_turn:
-			var t = create_tween()
-			t.set_trans(Tween.TRANS_CIRC)
-			t.tween_property(selected_piece, "position:y", 0, 0.2)
-			
+			_select_animation(selected_piece, false)
 			prev_square = null
 			selected_piece = null
+		if same_piece:
 			return
 	
 	if selected_piece:
 		if not selected_piece.move(prev_square.coords, square.coords, board_matrix):
-			wrong_move_animation()
+			_wrong_move_animation()
 			return
 		
 		if square.piece != null:
@@ -111,25 +118,19 @@ func _on_square_selected(square: Square, piece: Piece):
 	else:
 		prev_square = square
 		selected_piece = piece
-		
-		var t = create_tween()
-		t.set_trans(Tween.TRANS_CIRC)
-		t.tween_property(piece, "position:y", 0.5, 0.2)
+		_select_animation(piece)
 
 
-func _set_board():
+func _build_board():
 	for y in range(8):
 		var row = []
 		for x in range(8):
 			var sqr: Square = square_scene.instantiate()
-			
 			var is_white = !(x+y) & 1
 			sqr.color = Color.WHITE if is_white else Color.BLACK
 			sqr.position = Vector3(x, 0, y)
 			sqr.coords = Vector2(x, y)
-			
 			sqr.square_selected.connect(_on_square_selected)
-			
 			board.add_child(sqr)
 			row.append(sqr)
 		board_matrix.append(row)
@@ -148,19 +149,35 @@ func _clean_board():
 
 func _setup_layout(layout: Dictionary):
 	_clean_board()
-	var piece_map = [Pawn, Queen, King, Bishop, Horse, Rook]
 	for pos in layout.keys():
-		var piece_class: int = layout[pos].piece-1
+		var piece_class: int = layout[pos].piece
 		var new_piece: Piece = piece_map[piece_class].new()
+		new_piece.class_index = layout[pos].piece
 		new_piece.is_white = layout[pos].is_white
-		print(layout[pos].is_white)
 		new_piece.position = board_matrix[pos.y][pos.x].position
 		board_matrix[pos.y][pos.x].piece = new_piece
 		board.add_child(new_piece)
 	print(len(layout), " pieces added")
 
 
-func wrong_move_animation():
+func _save_current_layout():
+	var layout := {}
+	for y in range(8):
+		for x in range(8):
+			if board_matrix[y][x].piece:
+				layout.set(Vector2i(x, y), {
+					"piece": board_matrix[y][x].piece.class_index,
+					"is_white": board_matrix[y][x].piece.is_white
+				})
+
+
+func _select_animation(piece: Piece, selected: bool = true):
+	var t = create_tween()
+	t.set_trans(Tween.TRANS_CIRC)
+	t.tween_property(piece, "position:y", 0.5 if selected else 0.0, 0.2)
+
+
+func _wrong_move_animation():
 	var mag := 0.1
 	var s = create_tween()
 	s.tween_property(selected_piece, "rotation:z", mag, 0.1)
@@ -168,39 +185,3 @@ func wrong_move_animation():
 	s.tween_property(selected_piece, "rotation:z", mag*0.6, 0.1)
 	s.tween_property(selected_piece, "rotation:z", -mag*0.6, 0.1)
 	s.tween_property(selected_piece, "rotation:z", 0, 0.1)
-
-
-#----------------- this might get discarded
-func _set_pieces():
-	#Pawns
-	for i in range(8):
-		var bl := Pawn.new()
-		bl.is_white = false
-		bl.position = board_matrix[1][i].position
-		board_matrix[1][i].piece = bl
-		board.add_child(bl)
-		
-		var wh := Pawn.new()
-		wh.position = board_matrix[6][i].position
-		board_matrix[6][i].piece = wh
-		board.add_child(wh)
-	
-	#Main line
-	var line = [Rook, Horse, Bishop, Queen, King, Bishop, Horse, Rook]
-	for i in range(8):
-		#Black
-		var nw = line[i].new()
-		nw.is_white = false
-		nw.position = board_matrix[0][i].position
-		board_matrix[0][i].piece = nw
-		board.add_child(nw)
-		if nw is King:
-			nw.died.connect(_on_king_died)
-		
-		#White
-		nw = line[i].new()
-		nw.position = board_matrix[7][i].position
-		board_matrix[7][i].piece = nw
-		board.add_child(nw)
-		if nw is King:
-			nw.died.connect(_on_king_died)
