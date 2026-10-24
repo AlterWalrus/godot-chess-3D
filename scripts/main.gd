@@ -159,7 +159,7 @@ func _setup_layout(layout: Dictionary):
 	print(len(layout), " pieces added")
 
 
-func _save_current_layout():
+func _save_current_layout(filename: String) -> void:
 	var layout := {}
 	for y in range(8):
 		for x in range(8):
@@ -168,6 +168,14 @@ func _save_current_layout():
 					"piece": board_matrix[y][x].piece.class_index,
 					"is_white": board_matrix[y][x].piece.is_white
 				})
+	
+	var saves_path = "user://saves/"
+	if not DirAccess.dir_exists_absolute(saves_path):
+		DirAccess.make_dir_recursive_absolute(saves_path)
+	
+	var path = saves_path + filename + ".chess"
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	file.store_var(layout)
 
 
 func _select_animation(piece: Piece, selected: bool = true):

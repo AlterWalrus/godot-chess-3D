@@ -1,7 +1,7 @@
 extends Control
 
 signal setup_layout(layout: Dictionary)
-signal save_game
+signal save_game(filename: String)
 
 var settings_open := false
 var og_pos := Vector2(888, 0)
@@ -42,7 +42,7 @@ func _ready() -> void:
 	backgrond.item_selected.connect(_background_changed)
 	
 	setup_button.pressed.connect(setup_layout.emit.bind(setup_grid.layout))
-	save_button.pressed.connect(save_game.emit)
+	save_button.pressed.connect(_save_game_press)
 	save_button.disabled = true
 	game_name.text_changed.connect(_game_name_text_changed)
 
@@ -74,6 +74,10 @@ func _ssao_toggled(on):
 
 func _shadows_toggle(on):
 	sun.shadow_enabled = on
+
+
+func _save_game_press():
+	save_game.emit(game_name.text)
 
 
 func _fullscreen_toggle(fs):
