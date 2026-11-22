@@ -4,7 +4,7 @@ extends Piece
 func _init() -> void:
 	mesh = load("res://models/rook.obj")
 
-func move(from: Vector2, to: Vector2, board_matrix) -> bool:
+func move(from: Vector2i, to: Vector2i, board_matrix: Array) -> bool:
 	var dx = to.x - from.x
 	var dy = to.y - from.y
 	

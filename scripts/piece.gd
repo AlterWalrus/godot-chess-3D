@@ -19,7 +19,7 @@ func _ready() -> void:
 		model.rotate_y(PI)
 
 
-func is_path_clear(from: Vector2, to: Vector2, board_matrix: Array) -> bool:
+func is_path_clear(from: Vector2i, to: Vector2i, board_matrix: Array) -> bool:
 	var step_x = sign(to.x - from.x)
 	var step_y = sign(to.y - from.y)
 	
@@ -44,5 +44,5 @@ func die():
 
 
 @warning_ignore("unused_parameter")
-func move(from: Vector2, to: Vector2, board_matrix) -> bool:
+func move(from: Vector2i, to: Vector2i, board_matrix: Array) -> bool:
 	return true

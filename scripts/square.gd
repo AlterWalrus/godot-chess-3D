@@ -4,7 +4,7 @@ extends Area3D
 signal square_selected
 
 var piece: Piece
-var coords: Vector2
+var coords: Vector2i
 var color: Color
 var mouse_in := false
 var locked := false

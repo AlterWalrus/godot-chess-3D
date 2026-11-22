@@ -5,7 +5,7 @@ func _init() -> void:
 	mesh = load("res://models/horse.obj")
 
 
-func move(from: Vector2, to: Vector2, _board_matrix) -> bool:
+func move(from: Vector2i, to: Vector2i, _board_matrix: Array) -> bool:
 	var dx = abs(to.x - from.x)
 	var dy = abs(to.y - from.y)
 	

@@ -79,7 +79,7 @@ func _build_board() -> void:
 			var square: Square = square_scene.instantiate()
 			square.color = Color.WHITE if (x + y) % 2 == 0 else Color.BLACK
 			square.position = Vector3(x, 0, y)
-			square.coords = Vector2(x, y)
+			square.coords = Vector2i(x, y)
 			square.square_selected.connect(_on_square_selected)
 			board.add_child(square)
 			row.append(square)
