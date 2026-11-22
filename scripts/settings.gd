@@ -48,6 +48,11 @@ func _ready() -> void:
 	game_name.text_changed.connect(_game_name_text_changed)
 
 
+func load_layout(layout: Dictionary):
+	setup_grid.layout = layout
+	setup_grid.update_layout()
+
+
 func _game_name_text_changed(new_string: String):
 	save_button.disabled = new_string.is_empty()
 

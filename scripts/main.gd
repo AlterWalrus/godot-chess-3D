@@ -1,6 +1,13 @@
 extends Node
 
-var piece_map = [Pawn, Queen, King, Bishop, Horse, Rook]
+var piece_map = {
+	1: Pawn,
+	2: Queen,
+	3: King,
+	4: Bishop,
+	5: Horse,
+	6: Rook
+}
 
 var is_white_turn := true
 var board_matrix = []
@@ -38,6 +45,7 @@ func _ready() -> void:
 	var file = FileAccess.open(default_layout_path, FileAccess.READ)
 	var layout_dict: Dictionary = file.get_var()
 	_setup_layout(layout_dict)
+	settings.load_layout(layout_dict)
 
 
 func _process(delta: float) -> void:
@@ -163,6 +171,7 @@ func _clean_board():
 
 func _setup_layout(layout: Dictionary):
 	_clean_board()
+	print(layout)
 	for pos in layout.keys():
 		var piece_class: int = layout[pos].piece
 		var new_piece: Piece = piece_map[piece_class].new()

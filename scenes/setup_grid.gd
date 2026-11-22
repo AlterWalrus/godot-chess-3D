@@ -64,6 +64,25 @@ func _piece_changed(index: int) -> void:
 			return
 		
 		layout[active_button.coords] = {
-			"piece": index-1,
+			"piece": index,
 			"is_white": active_button.is_white
 		}
+		print(layout)
+
+
+func update_layout():
+	_clean_layout()
+	for btn in get_children():
+		if btn is LayoutButton:
+			if btn.coords in layout:
+				btn.icon = popup.get_item_icon(layout[btn.coords].piece)
+				if not layout[btn.coords].is_white:
+					btn.switch_color()
+
+
+func _clean_layout():
+	for btn in get_children():
+		if btn is LayoutButton:
+			btn.icon = null
+			if not btn.is_white:
+				btn.switch_color()
