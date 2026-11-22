@@ -7,6 +7,7 @@ var piece: Piece
 var coords: Vector2
 var color: Color
 var mouse_in := false
+var locked := false
 
 @onready var model := $MeshInstance3D
 
@@ -20,7 +21,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("click") and mouse_in:
+	if event.is_action_pressed("click") and mouse_in and not locked:
 		square_selected.emit(self, piece)
 
 

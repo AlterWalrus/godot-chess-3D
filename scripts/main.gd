@@ -29,6 +29,7 @@ var cam_zpos := 7.0:
 func _ready() -> void:
 	settings.setup_layout.connect(_setup_layout)
 	settings.save_game.connect(_save_current_layout)
+	settings.toggled.connect(_on_settings_toggled)
 	_build_board()
 	
 	var default_layout_path = "res://default.chess"
@@ -40,11 +41,14 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	cam.position.z = lerp(cam.position.z, cam_zpos, 0.2)
+	
+	if settings.settings_open:
+		return
+	
 	var dir = Input.get_vector("left", "right", "up", "down")
 	cam_pivot.rotation.y += dir.x * delta
 	cam_pivot.rotation.x += dir.y * delta
-	
-	cam.position.z = lerp(cam.position.z, cam_zpos, 0.2)
 
 
 func _input(event: InputEvent) -> void:
@@ -133,6 +137,17 @@ func _build_board():
 			board.add_child(sqr)
 			row.append(sqr)
 		board_matrix.append(row)
+
+
+func _lock_board(locked: bool) -> void:
+	for row in board_matrix:
+		for sqr in row:
+			if sqr is Square:
+				sqr.locked = locked
+
+
+func _on_settings_toggled(is_open: bool) -> void:
+	_lock_board(is_open)
 
 
 func _clean_board():

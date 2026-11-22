@@ -2,6 +2,7 @@ extends Control
 
 signal setup_layout(layout: Dictionary)
 signal save_game(filename: String)
+signal toggled(is_open: bool)
 
 var settings_open := false
 var og_pos := Vector2(888, 0)
@@ -89,6 +90,7 @@ func _on_settings_pressed():
 	settings_open = not settings_open
 	settings_button.disabled = true
 	settings_panel.show()
+	toggled.emit(settings_open)
 	
 	var t = create_tween().set_trans(Tween.TRANS_CUBIC)
 	if settings_open:
