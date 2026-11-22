@@ -171,7 +171,6 @@ func _clean_board():
 
 func _setup_layout(layout: Dictionary):
 	_clean_board()
-	print(layout)
 	for pos in layout.keys():
 		var piece_class: int = layout[pos].piece
 		var new_piece: Piece = piece_map[piece_class].new()

@@ -22,7 +22,6 @@ func _ready() -> void:
 func _setup_button(btn: LayoutButton, c: Vector2i) -> void:
 	btn.pressed.connect(_button_pressed.bind(btn))
 	btn.mouse_entered.connect(_button_mouse_entered.bind(btn))
-	btn.mouse_exited.connect(_button_mouse_exited.bind(btn))
 	btn.coords = c
 
 
@@ -50,9 +49,6 @@ func _button_pressed(btn: LayoutButton) -> void:
 
 func _button_mouse_entered(btn: LayoutButton):
 	hover_button = btn
-
-func _button_mouse_exited(_btn: LayoutButton):
-	pass
 
 
 func _piece_changed(index: int) -> void:
