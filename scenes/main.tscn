@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cch4ohmgl3k71" path="res://settings-icon.png" id="4_tbgi4"]
 [ext_resource type="Script" uid="uid://d1tbr1q4lpvgj" path="res://scripts/settings.gd" id="4_tefeu"]
 [ext_resource type="Script" uid="uid://rwx4iscqnfhl" path="res://scripts/fps.gd" id="5_tefeu"]
-[ext_resource type="Script" uid="uid://be4iikgxrp3rr" path="res://scenes/setup_grid.gd" id="6_o6xl0"]
+[ext_resource type="Script" uid="uid://be4iikgxrp3rr" path="res://scripts/setup_grid.gd" id="6_o6xl0"]
 [ext_resource type="Texture2D" uid="uid://bpewbuf7ilha6" path="res://sprites/queen.png" id="7_85g3d"]
 [ext_resource type="PackedScene" uid="uid://pfx6tylgtjes" path="res://scenes/layout_button.tscn" id="7_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://ffhb0rbqk54s" path="res://sprites/pawn.png" id="8_a8y0u"]
@@ -166,7 +166,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 48
 text = "??? GANA"
 
-[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "settings_button", "settings_panel", "settings_vbox", "fullscreen", "shadows", "ssao", "glow", "depth", "backgrond", "setup_grid", "setup_button", "game_name", "save_button")]
+[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "settings_button", "settings_panel", "settings_vbox", "fullscreen", "shadows", "ssao", "glow", "depth", "background", "setup_grid", "setup_button", "game_name", "save_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -190,7 +190,7 @@ shadows = NodePath("SettingsPanel/VBox/Shadows")
 ssao = NodePath("SettingsPanel/VBox/SSAO")
 glow = NodePath("SettingsPanel/VBox/Glow")
 depth = NodePath("SettingsPanel/VBox/DepthField")
-backgrond = NodePath("SettingsPanel/VBox/Background")
+background = NodePath("SettingsPanel/VBox/Background")
 setup_grid = NodePath("SettingsPanel/VBox/SetupGrid")
 setup_button = NodePath("SettingsPanel/VBox/SetupButton")
 game_name = NodePath("SettingsPanel/VBox/CurrentGame/GameName")
