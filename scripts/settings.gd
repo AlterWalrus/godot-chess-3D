@@ -3,6 +3,7 @@ extends Control
 
 signal setup_layout(layout: Dictionary)
 signal save_game(filename: String)
+signal load_game(filename: String)
 signal toggled(is_open: bool)
 
 var settings_open := false
@@ -28,6 +29,8 @@ var og_pos := Vector2(888, 0)
 
 @export var game_name: LineEdit
 @export var save_button: Button
+@export var load_button: MenuButton
+@export var save_notification: AcceptDialog
 
 
 func _ready() -> void:
@@ -48,6 +51,8 @@ func _ready() -> void:
 	save_button.pressed.connect(_save_game_pressed)
 	save_button.disabled = true
 	game_name.text_changed.connect(_game_name_text_changed)
+	load_button.get_popup().about_to_popup.connect(_populate_load_menu)
+	load_button.get_popup().index_pressed.connect(_on_load_selected)
 
 
 func load_layout(layout: Dictionary) -> void:
@@ -94,6 +99,20 @@ func _fullscreen_toggled(on: bool) -> void:
 
 func _save_game_pressed() -> void:
 	save_game.emit(game_name.text)
+	game_name.text = ""
+	save_notification.popup_centered()
+
+
+func _populate_load_menu() -> void:
+	var popup := load_button.get_popup()
+	popup.clear()
+	for filename in Board.list_saves():
+		popup.add_item(filename)
+
+
+func _on_load_selected(index: int) -> void:
+	var filename: String = load_button.get_popup().get_item_text(index)
+	load_game.emit(filename)
 
 
 func _on_settings_pressed() -> void:

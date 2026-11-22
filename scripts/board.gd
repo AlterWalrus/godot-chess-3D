@@ -71,7 +71,7 @@ func to_layout() -> Dictionary:
 func save_layout(filename: String) -> void:
 	if not DirAccess.dir_exists_absolute(SAVES_DIR):
 		DirAccess.make_dir_recursive_absolute(SAVES_DIR)
-	var file := FileAccess.open(SAVES_DIR + filename + ".chess", FileAccess.WRITE)
+	var file := FileAccess.open(save_path(filename), FileAccess.WRITE)
 	file.store_var(to_layout())
 
 
@@ -82,6 +82,26 @@ func load_layout(path: String) -> Dictionary:
 	var layout: Dictionary = file.get_var()
 	setup_layout(layout)
 	return layout
+
+
+static func save_path(filename: String) -> String:
+	return SAVES_DIR + filename + ".chess"
+
+
+static func list_saves() -> PackedStringArray:
+	var names := PackedStringArray()
+	var dir := DirAccess.open(SAVES_DIR)
+	if dir == null:
+		return names
+	dir.list_dir_begin()
+	var file := dir.get_next()
+	while file != "":
+		if not dir.current_is_dir() and file.ends_with(".chess"):
+			names.append(file.trim_suffix(".chess"))
+		file = dir.get_next()
+	dir.list_dir_end()
+	names.sort()
+	return names
 
 
 func set_locked(locked: bool) -> void:

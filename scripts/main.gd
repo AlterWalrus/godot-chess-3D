@@ -11,9 +11,16 @@ func _ready() -> void:
 	board.king_died.connect(game.on_king_died)
 	settings.setup_layout.connect(board.setup_layout)
 	settings.save_game.connect(board.save_layout)
+	settings.load_game.connect(_on_load_game)
 	settings.toggled.connect(_on_settings_toggled)
 
 	var layout: Dictionary = board.load_layout(Board.DEFAULT_LAYOUT_PATH)
+	if not layout.is_empty():
+		settings.load_layout(layout)
+
+
+func _on_load_game(filename: String) -> void:
+	var layout: Dictionary = board.load_layout(Board.save_path(filename))
 	if not layout.is_empty():
 		settings.load_layout(layout)
 

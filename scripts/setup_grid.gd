@@ -3,11 +3,13 @@ class_name SetupGrid
 
 @export var popup: PopupMenu
 @export var layout_button_scene: PackedScene
+@export var reset_button: Button
 
 var hover_button: LayoutButton
 var active_button: LayoutButton
 
 func _ready() -> void:
+	reset_button.pressed.connect(_clear_buttons)
 	popup.index_pressed.connect(_piece_changed)
 	for i in range(64):
 		var button: LayoutButton = layout_button_scene.instantiate()
