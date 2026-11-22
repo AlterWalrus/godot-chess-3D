@@ -42,15 +42,18 @@ func _ready() -> void:
 	depth.toggled.connect(_depth_toggled)
 	backgrond.item_selected.connect(_background_changed)
 	
-	setup_button.pressed.connect(setup_layout.emit.bind(setup_grid.layout))
+	setup_button.pressed.connect(_on_setup_layout_pressed)
 	save_button.pressed.connect(_save_game_press)
 	save_button.disabled = true
 	game_name.text_changed.connect(_game_name_text_changed)
 
 
+func _on_setup_layout_pressed():
+	setup_layout.emit(setup_grid.get_layout())
+
+
 func load_layout(layout: Dictionary):
-	setup_grid.layout = layout
-	setup_grid.update_layout()
+	setup_grid.apply_layout(layout)
 
 
 func _game_name_text_changed(new_string: String):

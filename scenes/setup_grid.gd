@@ -1,11 +1,12 @@
 extends GridContainer
 
+signal layout_changed(layout: Dictionary)
+
 @export var popup: PopupMenu
 @export var layout_button_scene: PackedScene
 
 var hover_button: LayoutButton = null
 var active_button: LayoutButton = null
-var layout: Dictionary = {}
 
 func _ready() -> void:
 	popup.index_pressed.connect(_piece_changed)
@@ -33,8 +34,7 @@ func _input(event: InputEvent) -> void:
 			return
 		
 		hover_button.switch_color()
-		if hover_button.coords in layout:
-			layout[hover_button.coords]["is_white"] = hover_button.is_white
+		layout_changed.emit(get_layout())
 
 
 func _button_pressed(btn: LayoutButton) -> void:
@@ -56,33 +56,45 @@ func _button_mouse_exited(_btn: LayoutButton):
 
 
 func _piece_changed(index: int) -> void:
-	if active_button:
-		active_button.icon = popup.get_item_icon(index)
-		
-		if index == 0:
-			layout.erase(active_button.coords)
-			return
-		
-		layout[active_button.coords] = {
-			"piece": index,
-			"is_white": active_button.is_white
-		}
-		print(layout)
+	if not active_button:
+		return
+	active_button.piece = index
+	active_button.icon = popup.get_item_icon(index)
+	layout_changed.emit(get_layout())
 
 
-func update_layout():
-	_clean_layout()
+func get_layout() -> Dictionary:
+	var layout: Dictionary = {}
+	for btn in get_children():
+		if btn is LayoutButton and btn.piece != 0:
+			layout[btn.coords] = {
+				"piece": btn.piece,
+				"is_white": btn.is_white
+			}
+	return layout
+
+
+func apply_layout(layout: Dictionary) -> void:
+	_clear_buttons()
+	for pos in layout.keys():
+		var btn := _find_button(pos)
+		if btn == null:
+			continue
+		btn.piece = layout[pos].piece
+		btn.icon = popup.get_item_icon(btn.piece)
+		btn.set_color(layout[pos].is_white)
+
+
+func _clear_buttons() -> void:
 	for btn in get_children():
 		if btn is LayoutButton:
-			if btn.coords in layout:
-				btn.icon = popup.get_item_icon(layout[btn.coords].piece)
-				if not layout[btn.coords].is_white:
-					btn.switch_color()
-
-
-func _clean_layout():
-	for btn in get_children():
-		if btn is LayoutButton:
+			btn.piece = 0
 			btn.icon = null
-			if not btn.is_white:
-				btn.switch_color()
+			btn.set_color(true)
+
+
+func _find_button(coords: Vector2i) -> LayoutButton:
+	for btn in get_children():
+		if btn is LayoutButton and btn.coords == coords:
+			return btn
+	return null
