@@ -120,3 +120,13 @@ func spawn_piece(coords: Vector2i, class_index: int, is_white: bool) -> void:
 	if piece is King:
 		piece.died.connect(king_died.emit)
 	add_child(piece)
+
+
+func set_piece(coords: Vector2i, piece: int, is_white: bool) -> void:
+	var square: Square = square_at(coords)
+	if square.piece:
+		square.piece.queue_free()
+		square.piece = null
+	if piece == 0:
+		return
+	spawn_piece(coords, piece, is_white)

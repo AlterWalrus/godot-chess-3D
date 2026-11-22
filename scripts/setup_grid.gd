@@ -5,11 +5,14 @@ class_name SetupGrid
 @export var layout_button_scene: PackedScene
 @export var reset_button: Button
 
+signal piece_changed(coords: Vector2i, piece: int, is_white: bool)
+signal cleared
+
 var hover_button: LayoutButton
 var active_button: LayoutButton
 
 func _ready() -> void:
-	reset_button.pressed.connect(_clear_buttons)
+	reset_button.pressed.connect(_on_reset_pressed)
 	popup.index_pressed.connect(_piece_changed)
 	for i in range(64):
 		var button: LayoutButton = layout_button_scene.instantiate()
@@ -32,6 +35,8 @@ func _input(event: InputEvent) -> void:
 	if hover_button == null:
 		return
 	hover_button.switch_color()
+	if hover_button.piece != 0:
+		piece_changed.emit(hover_button.coords, hover_button.piece, hover_button.is_white)
 
 
 func _button_pressed(button: LayoutButton) -> void:
@@ -53,17 +58,7 @@ func _piece_changed(index: int) -> void:
 		return
 	active_button.piece = index
 	active_button.icon = popup.get_item_icon(index)
-
-
-func get_layout() -> Dictionary:
-	var layout: Dictionary = {}
-	for child in get_children():
-		if child is LayoutButton and child.piece != 0:
-			layout[child.coords] = {
-				"piece": child.piece,
-				"is_white": child.is_white,
-			}
-	return layout
+	piece_changed.emit(active_button.coords, index, active_button.is_white)
 
 
 func apply_layout(layout: Dictionary) -> void:
@@ -75,6 +70,20 @@ func apply_layout(layout: Dictionary) -> void:
 		button.piece = layout[coords].piece
 		button.icon = popup.get_item_icon(button.piece)
 		button.set_color(layout[coords].is_white)
+
+
+func set_piece(coords: Vector2i, piece: int, is_white: bool) -> void:
+	var button := _find_button(coords)
+	if button == null:
+		return
+	button.piece = piece
+	button.icon = popup.get_item_icon(piece)
+	button.set_color(is_white)
+
+
+func _on_reset_pressed() -> void:
+	_clear_buttons()
+	cleared.emit()
 
 
 func _clear_buttons() -> void:

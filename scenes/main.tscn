@@ -74,6 +74,7 @@ ground_bottom_color = Color(1.4439226e-07, 0.3068485, 0.050884455, 1)
 sky_material = SubResource("ProceduralSkyMaterial_85g3d")
 
 [sub_resource type="Theme" id="Theme_muem4"]
+Button/font_sizes/font_size = 14
 CheckButton/font_sizes/font_size = 12
 
 [node name="Main" type="Node"]
@@ -180,7 +181,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 48
 text = "??? GANA"
 
-[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "settings_button", "settings_panel", "settings_vbox", "fullscreen", "shadows", "ssao", "glow", "depth", "background", "setup_grid", "setup_button", "game_name", "save_button", "load_button", "save_notification")]
+[node name="Settings" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("env", "sun", "settings_button", "settings_panel", "settings_vbox", "fullscreen", "shadows", "ssao", "glow", "depth", "background", "setup_grid", "restore_button", "game_name", "save_button", "load_button", "save_notification")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -206,7 +207,7 @@ glow = NodePath("SettingsPanel/VBox/Glow")
 depth = NodePath("SettingsPanel/VBox/DepthField")
 background = NodePath("SettingsPanel/VBox/Background")
 setup_grid = NodePath("SettingsPanel/VBox/SetupGrid")
-setup_button = NodePath("SettingsPanel/VBox/SetupButton")
+restore_button = NodePath("SettingsPanel/VBox/LayoutOptions/RestoreButton")
 game_name = NodePath("SettingsPanel/VBox/CurrentGame/GameName")
 save_button = NodePath("SettingsPanel/VBox/CurrentGame/SaveButton")
 load_button = NodePath("SettingsPanel/VBox/MenuButton")
@@ -223,6 +224,7 @@ offset_top = -1.0
 offset_bottom = 689.0
 grow_horizontal = 0
 pivot_offset = Vector2(360, 0)
+theme = SubResource("Theme_muem4")
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/Settings/SettingsPanel"]
 layout_mode = 1
@@ -234,7 +236,7 @@ offset_top = 5.0
 offset_right = -51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_muem4")
+theme_override_constants/separation = 2
 
 [node name="FPS" type="Label" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 modulate = Color(0.601223, 0.601223, 0.60122293, 1)
@@ -287,15 +289,21 @@ columns = 8
 script = ExtResource("6_o6xl0")
 popup = NodePath("../../PopupPiece")
 layout_button_scene = ExtResource("7_a8y0u")
-reset_button = NodePath("../ResetButton")
+reset_button = NodePath("../LayoutOptions/ResetButton")
 
-[node name="ResetButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+[node name="LayoutOptions" type="HBoxContainer" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 layout_mode = 2
-text = "Reset layout"
 
-[node name="SetupButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
+[node name="ResetButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/LayoutOptions"]
 layout_mode = 2
-text = "Apply layout"
+size_flags_horizontal = 3
+text = "Clear"
+
+[node name="RestoreButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/LayoutOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Restore"
+expand_icon = true
 
 [node name="Label" type="Label" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 layout_mode = 2
@@ -311,7 +319,7 @@ size_flags_horizontal = 3
 
 [node name="SaveButton" type="Button" parent="CanvasLayer/Settings/SettingsPanel/VBox/CurrentGame"]
 layout_mode = 2
-text = "Save current game"
+text = "Save game"
 
 [node name="MenuButton" type="MenuButton" parent="CanvasLayer/Settings/SettingsPanel/VBox"]
 layout_mode = 2

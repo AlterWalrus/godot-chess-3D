@@ -10,7 +10,7 @@ shader_parameter/invert_factor = 0.0
 
 [node name="LayoutButton" type="Button"]
 material = SubResource("ShaderMaterial_ngcik")
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(34, 34)
 flat = true
 expand_icon = true
 script = ExtResource("1_6cmfm")

@@ -1,6 +1,8 @@
 class_name Game
 extends Node
 
+signal piece_moved(from: Vector2i, to: Vector2i, piece: int, is_white: bool)
+
 @export var board: Board
 @export var turn_indicator: Control
 @export var end_screen: Control
@@ -67,8 +69,10 @@ func _move_piece(square: Square) -> void:
 
 	square.piece = selected_piece
 	prev_square.piece = null
+	var moved := selected_piece
 	selected_piece = null
 	_end_turn()
+	piece_moved.emit(prev_square.coords, square.coords, moved.class_index, moved.is_white)
 
 
 func _end_turn() -> void:

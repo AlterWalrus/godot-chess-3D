@@ -1,7 +1,9 @@
 class_name Settings
 extends Control
 
-signal setup_layout(layout: Dictionary)
+signal piece_changed(coords: Vector2i, piece: int, is_white: bool)
+signal reset_layout()
+signal restore_default()
 signal save_game(filename: String)
 signal load_game(filename: String)
 signal toggled(is_open: bool)
@@ -25,7 +27,7 @@ var og_pos := Vector2(888, 0)
 @export var background: OptionButton
 
 @export var setup_grid: SetupGrid
-@export var setup_button: Button
+@export var restore_button: Button
 
 @export var game_name: LineEdit
 @export var save_button: Button
@@ -47,20 +49,28 @@ func _ready() -> void:
 	depth.toggled.connect(_depth_toggled)
 	background.item_selected.connect(_background_changed)
 
-	setup_button.pressed.connect(_on_setup_layout_pressed)
+	setup_grid.piece_changed.connect(piece_changed.emit)
+	setup_grid.cleared.connect(reset_layout.emit)
+	restore_button.pressed.connect(_on_restore_default_pressed)
 	save_button.pressed.connect(_save_game_pressed)
 	save_button.disabled = true
 	game_name.text_changed.connect(_game_name_text_changed)
 	load_button.get_popup().about_to_popup.connect(_populate_load_menu)
 	load_button.get_popup().index_pressed.connect(_on_load_selected)
+	
+	load_button.disabled = Board.list_saves().is_empty()
 
 
 func load_layout(layout: Dictionary) -> void:
 	setup_grid.apply_layout(layout)
 
 
-func _on_setup_layout_pressed() -> void:
-	setup_layout.emit(setup_grid.get_layout())
+func set_piece(coords: Vector2i, piece: int, is_white: bool) -> void:
+	setup_grid.set_piece(coords, piece, is_white)
+
+
+func _on_restore_default_pressed() -> void:
+	restore_default.emit()
 
 
 func _game_name_text_changed(text: String) -> void:
@@ -101,6 +111,7 @@ func _save_game_pressed() -> void:
 	save_game.emit(game_name.text)
 	game_name.text = ""
 	save_notification.popup_centered()
+	load_button.disabled = false
 
 
 func _populate_load_menu() -> void:
