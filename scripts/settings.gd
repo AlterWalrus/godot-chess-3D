@@ -1,3 +1,4 @@
+class_name Settings
 extends Control
 
 signal setup_layout(layout: Dictionary)

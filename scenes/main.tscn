@@ -1,7 +1,10 @@
-[gd_scene load_steps=31 format=3 uid="uid://cys6i3n2cq7c"]
+[gd_scene load_steps=34 format=3 uid="uid://cys6i3n2cq7c"]
 
+[ext_resource type="Script" uid="uid://cyxbje6r0gpe1" path="res://scripts/board.gd" id="1_board"]
 [ext_resource type="Script" uid="uid://dmolvo2cxyapc" path="res://scripts/main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://cakn338j5jbjn" path="res://scenes/square.tscn" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://dwdxxm4663s4p" path="res://scripts/game.gd" id="2_game"]
+[ext_resource type="Script" uid="uid://c8ak6m5qgyngg" path="res://scripts/camera_rig.gd" id="3_camera"]
 [ext_resource type="Texture2D" uid="uid://bbim20g6jkaik" path="res://IMGL6415_4k_acescg.exr" id="4_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://cch4ohmgl3k71" path="res://settings-icon.png" id="4_tbgi4"]
 [ext_resource type="Script" uid="uid://d1tbr1q4lpvgj" path="res://scripts/settings.gd" id="4_tefeu"]
@@ -72,7 +75,12 @@ sky_material = SubResource("ProceduralSkyMaterial_85g3d")
 
 [node name="Main" type="Node"]
 script = ExtResource("1_ig7tw")
-square_scene = ExtResource("2_0xm2m")
+
+[node name="Game" type="Node" parent="." node_paths=PackedStringArray("board", "turn_indicator", "end_screen")]
+script = ExtResource("2_game")
+board = NodePath("../Board")
+turn_indicator = NodePath("../CanvasLayer/CurrentTurn")
+end_screen = NodePath("../CanvasLayer/EndScreen")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1bvp3")
@@ -85,9 +93,12 @@ shadow_enabled = true
 
 [node name="Board" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -3.5)
+script = ExtResource("1_board")
+square_scene = ExtResource("2_0xm2m")
 
 [node name="CamPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, -1, 0)
+script = ExtResource("3_camera")
 
 [node name="Camera3D" type="Camera3D" parent="CamPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
